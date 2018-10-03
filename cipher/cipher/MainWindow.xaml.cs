@@ -55,5 +55,11 @@ namespace cipher
                 File.WriteAllText(dialog.FileName, text.Text);
             }
         }
+
+        private void show_matrix(object sender, RoutedEventArgs e)
+        {
+            matrix_window win = new matrix_window();
+            win.Show();
+        }
     }
 }
