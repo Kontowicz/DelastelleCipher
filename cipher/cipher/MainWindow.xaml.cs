@@ -27,6 +27,9 @@ namespace cipher
             InitializeComponent();
         }
 
+        private bool entered_password = false;
+        private delastelle d = new delastelle();
+
         private void load_file(object sender, RoutedEventArgs e)
         {
             try
@@ -60,6 +63,51 @@ namespace cipher
         {
             matrix_window win = new matrix_window();
             win.Show();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string pass = new string  (password.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+            string plain_text = new string(text.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+
+            if (pass == "" || pass == "Enterpassword")
+            {
+                MessageBoxResult result = MessageBox.Show("Enter password");
+            }
+            else if (plain_text == "")
+            {
+                MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+            }
+            if(plain_text != "" || pass != "")
+            {
+                d.set_matrix(password.Text);
+            }
+        }
+
+        private void password_clear(object sender, RoutedEventArgs e)
+        {
+            entered_password = true;
+            password.Text = "";
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            string pass = new string(password.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+            string plain_text = new string(text.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+
+            if (pass == "" || pass == "Enterpassword")
+            {
+                MessageBoxResult result = MessageBox.Show("Enter password");
+            }
+            else if (plain_text == "")
+            {
+                MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+            }
+            if (plain_text != "" || pass != "")
+            {
+                d.set_matrix(password.Text);
+                text.Text = d.poziomo(plain_text);
+            }
         }
     }
 }

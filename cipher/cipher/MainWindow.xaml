@@ -37,9 +37,12 @@
           <ColumnDefinition Width="*"></ColumnDefinition>
           <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Encrypt"/>
-        <Button Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Decrypt"/>
-      <TextBox Grid.Row="3" Grid.Column="1" Grid.RowSpan="8" Grid.ColumnSpan="10" Name="text" TextWrapping="Wrap"
+        <Button Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Encrypt" Click="Button_Click_1"/>
+        <Button Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Decrypt" Click="Button_Click"/>
+
+        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="10" Margin="0,0,0,30" Text="Enter password" Name="password" PreviewMouseDown="password_clear"/>
+
+      <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="10" Name="text" TextWrapping="Wrap"
                ScrollViewer.VerticalScrollBarVisibility="Visible"/>
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" Margin="0,0,0,44">
             <MenuItem Header="Save" Click="save_file"/>
