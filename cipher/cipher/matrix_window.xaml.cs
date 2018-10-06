@@ -19,7 +19,7 @@ namespace cipher
     /// </summary>
     public partial class matrix_window : Window
     {
-        public matrix_window()
+        public matrix_window(string[] password)
         {
             InitializeComponent();
             this.Title = "Matrix";
@@ -136,7 +136,7 @@ namespace cipher
                 {
                     view_box_val[cnt] = new Viewbox();
                     Label tmp = new Label();
-                    tmp.Content = (cnt + 1).ToString();
+                    tmp.Content = password[cnt].ToString();
                     view_box_val[cnt].Child = tmp;
                     view_box_val[cnt].Visibility = Visibility.Visible;
                     view_box_val[cnt].VerticalAlignment = VerticalAlignment.Bottom;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -61,27 +62,81 @@ namespace cipher
 
         private void show_matrix(object sender, RoutedEventArgs e)
         {
-            matrix_window win = new matrix_window();
-            win.Show();
+            string pass = new string(password.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+            if (password.Text != "" && password.Text != "Enter password")
+            {
+                d.set_matrix(pass);
+                matrix_window win = new matrix_window(d.get_matrix());
+                win.Show();
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Enter password");
+            }
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string pass = new string  (password.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-            string plain_text = new string(text.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+            if (remove_white.IsChecked == true)
+            {
+                string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                string plain_text = text.Text;
+                d.set_matrix(pass);
+                if (pass == "" || pass == "Enterpassword")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter password");
+                }
+                else if (plain_text == "")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+                }
+                if (plain_text != "" && pass != "")
+                {
+                    if (horizontali.IsChecked == true)
+                    {
+                        text.Text = d.horizontally_decode(plain_text);
+                    }
+                    else if (gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol_decode(plain_text);
+                    }
+                    else if (dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_decode(plain_text);
+                    }
+                }
+            }
+            else
+            {
+                string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                string plain_text = text.Text;
+                d.set_matrix(pass);
+                if (pass == "" || pass == "Enterpassword")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter password");
+                }
+                else if (plain_text == "")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+                }
+                if (plain_text != "" && pass != "")
+                {
+                    if (horizontali.IsChecked == true)
+                    {
+                        text.Text = d.horizontaly_white_decode(plain_text);
+                    }
+                    else if (gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_gol_white_decode(plain_text);
+                    }
+                    else if (dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_white_decode(plain_text);
+                    }
+                }
+            }
 
-            if (pass == "" || pass == "Enterpassword")
-            {
-                MessageBoxResult result = MessageBox.Show("Enter password");
-            }
-            else if (plain_text == "")
-            {
-                MessageBoxResult result = MessageBox.Show("Enter text to encyption");
-            }
-            if(plain_text != "" || pass != "")
-            {
-                d.set_matrix(password.Text);
-            }
         }
 
         private void password_clear(object sender, RoutedEventArgs e)
@@ -92,21 +147,64 @@ namespace cipher
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string pass = new string(password.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-            string plain_text = new string(text.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
 
-            if (pass == "" || pass == "Enterpassword")
+            if (remove_white.IsChecked == true)
             {
-                MessageBoxResult result = MessageBox.Show("Enter password");
+                string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
+                d.set_matrix(pass);
+                if (pass == "" || pass == "Enterpassword")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter password");
+                }
+                else if (plain_text == "")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+                }
+                if (plain_text != "" && pass != "")
+                {
+                    if (horizontali.IsChecked == true)
+                    {
+                        text.Text = d.horizontally(plain_text);
+                    }
+                    else if(gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol(plain_text);
+                    }
+                    else if(dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora(plain_text);
+                    }
+                }
             }
-            else if (plain_text == "")
+            else
             {
-                MessageBoxResult result = MessageBox.Show("Enter text to encyption");
-            }
-            if (plain_text != "" || pass != "")
-            {
-                d.set_matrix(password.Text);
-                text.Text = d.poziomo(plain_text);
+                string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                string plain_text = text.Text;
+                d.set_matrix(pass);
+                if (pass == "" || pass == "Enterpassword")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter password");
+                }
+                else if (plain_text == "")
+                {
+                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+                }
+                if (plain_text != "" && pass != "")
+                {
+                    if (horizontali.IsChecked == true)
+                    {
+                        text.Text = d.horizontally_white(plain_text);
+                    }
+                    else if (gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol_white_encode(plain_text);
+                    }
+                    else if (dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_white_encode(plain_text);
+                    }
+                }
             }
         }
     }
