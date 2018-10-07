@@ -81,7 +81,7 @@ namespace cipher
             if (remove_white.IsChecked == true)
             {
                 string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                string plain_text = text.Text;
+                string plain_text = text.Text.ToLower();
                 d.set_matrix(pass);
                 if (pass == "" || pass == "Enterpassword")
                 {
@@ -89,22 +89,15 @@ namespace cipher
                 }
                 else if (plain_text == "")
                 {
-                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
+                    MessageBoxResult result = MessageBox.Show("Enter text to decryption");
                 }
                 if (plain_text != "" && pass != "")
                 {
                     if (horizontali.IsChecked == true)
                     {
-                        text.Text = d.horizontally_decode(plain_text);
+                        text.Text = d.poziomo_rozszyfruj(plain_text);
                     }
-                    else if (gora_dol.IsChecked == true)
-                    {
-                        text.Text = d.gora_dol_decode(plain_text);
-                    }
-                    else if (dol_gora.IsChecked == true)
-                    {
-                        text.Text = d.dol_gora_decode(plain_text);
-                    }
+
                 }
             }
             else
@@ -124,16 +117,9 @@ namespace cipher
                 {
                     if (horizontali.IsChecked == true)
                     {
-                        text.Text = d.horizontaly_white_decode(plain_text);
+                        text.Text = d.poziomo_rozszyfruj_specjlane(plain_text);
                     }
-                    else if (gora_dol.IsChecked == true)
-                    {
-                        text.Text = d.gora_gol_white_decode(plain_text);
-                    }
-                    else if (dol_gora.IsChecked == true)
-                    {
-                        text.Text = d.dol_gora_white_decode(plain_text);
-                    }
+
                 }
             }
 
@@ -145,15 +131,16 @@ namespace cipher
             password.Text = "";
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void button_szyfruj(object sender, RoutedEventArgs e)
         {
 
             if (remove_white.IsChecked == true)
             {
                 string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
                 string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
+                System.Console.WriteLine(plain_text);
                 d.set_matrix(pass);
-                if (pass == "" || pass == "Enterpassword")
+                if (pass == "" || pass == "enterpassword")
                 {
                     MessageBoxResult result = MessageBox.Show("Enter password");
                 }
@@ -165,24 +152,16 @@ namespace cipher
                 {
                     if (horizontali.IsChecked == true)
                     {
-                        text.Text = d.horizontally(plain_text);
-                    }
-                    else if(gora_dol.IsChecked == true)
-                    {
-                        text.Text = d.gora_dol(plain_text);
-                    }
-                    else if(dol_gora.IsChecked == true)
-                    {
-                        text.Text = d.dol_gora(plain_text);
+                        text.Text = d.poziomo_szyforwanie(plain_text);
                     }
                 }
             }
             else
             {
                 string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                string plain_text = text.Text;
+                string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", ""); 
                 d.set_matrix(pass);
-                if (pass == "" || pass == "Enterpassword")
+                if (pass == "" || pass == "enterpassword")
                 {
                     MessageBoxResult result = MessageBox.Show("Enter password");
                 }
@@ -194,15 +173,7 @@ namespace cipher
                 {
                     if (horizontali.IsChecked == true)
                     {
-                        text.Text = d.horizontally_white(plain_text);
-                    }
-                    else if (gora_dol.IsChecked == true)
-                    {
-                        text.Text = d.gora_dol_white_encode(plain_text);
-                    }
-                    else if (dol_gora.IsChecked == true)
-                    {
-                        text.Text = d.dol_gora_white_encode(plain_text);
+                        text.Text = d.poziomo_szyfruj_specjalne(plain_text);
                     }
                 }
             }

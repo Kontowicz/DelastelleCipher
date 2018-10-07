@@ -37,8 +37,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Encrypt" Click="Button_Click_1"/>
-        <Button Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Decrypt" Click="Button_Click"/>
+        <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Szyfruj" Click="button_szyfruj"/>
+        <Button Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Rozszyfruj" Click="Button_Click"/>
 
         <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="10" Margin="0,0,0,30" Text="Enter password" Name="password" PreviewMouseDown="password_clear"/>
 
@@ -50,15 +50,15 @@
         <RadioButton  Name="dol_gora" Content="Z dołu do góry" Grid.ColumnSpan="2" Margin="0, 4, 0, 0"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" Margin="20,0,0,0">
-            <RadioButton Name="remove_white" Content="remove white" IsChecked="True"></RadioButton>
-            <RadioButton Content="rewrite white" Margin="0,2,0,0"/>
+        <StackPanel Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Margin="20,0,0,0">
+            <RadioButton Name="remove_white" Content="Usun znaki specjalne" IsChecked="True"></RadioButton>
+            <RadioButton Content="Przpiesz znaki specjalne" Margin="0,2,0,0"/>
         </StackPanel>
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" Margin="0,0,0,44">
-            <MenuItem Header="Save" Click="save_file"/>
-            <MenuItem Header="Read" Click="load_file"/>
-            <MenuItem Header="About program"/>
-            <MenuItem Header="Matrix" Click="show_matrix"/>
+            <MenuItem Header="Zapisz" Click="save_file"/>
+            <MenuItem Header="Otwórz" Click="load_file"/>
+            <MenuItem Header="O programie"/>
+            <MenuItem Header="Macierz" Click="show_matrix"/>
         </Menu>
     </Grid>
 
