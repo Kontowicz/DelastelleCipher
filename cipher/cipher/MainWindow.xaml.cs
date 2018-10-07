@@ -97,7 +97,14 @@ namespace cipher
                     {
                         text.Text = d.poziomo_rozszyfruj(plain_text);
                     }
-
+                    if(gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol_rozszyforwanie(plain_text);
+                    }
+                    if (dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_rozszyforwanie(plain_text);
+                    }
                 }
             }
             else
@@ -118,6 +125,14 @@ namespace cipher
                     if (horizontali.IsChecked == true)
                     {
                         text.Text = d.poziomo_rozszyfruj_specjlane(plain_text);
+                    }
+                    if (gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol_rozszyfruj_specjalne(plain_text);
+                    }
+                    if(dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_rozszyfruj_specjalne(plain_text);
                     }
 
                 }
@@ -154,12 +169,20 @@ namespace cipher
                     {
                         text.Text = d.poziomo_szyforwanie(plain_text);
                     }
+                    else if (gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol_szyforwanie(plain_text);
+                    }
+                    else if (dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_szyfrowanie(plain_text);
+                    }
                 }
             }
             else
             {
                 string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", ""); 
+                string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_"); 
                 d.set_matrix(pass);
                 if (pass == "" || pass == "enterpassword")
                 {
@@ -174,6 +197,14 @@ namespace cipher
                     if (horizontali.IsChecked == true)
                     {
                         text.Text = d.poziomo_szyfruj_specjalne(plain_text);
+                    }
+                    if(gora_dol.IsChecked == true)
+                    {
+                        text.Text = d.gora_dol_szyfruj_specjalne(plain_text);
+                    }
+                    if(dol_gora.IsChecked == true)
+                    {
+                        text.Text = d.dol_gora_szyfruj_specjalne(plain_text);
                     }
                 }
             }
