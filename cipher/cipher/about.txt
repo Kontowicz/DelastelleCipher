@@ -1,0 +1,18 @@
+Program wykonał: Piotr Kontowicz
+Zadanie: Szyfr Delastelle'a
+Program umożliwia:
+	-Wczytanie pliku z systemu plików,
+	-Zapisanie pliku w systemie plików,
+	-Wyświetlenie tego okna,
+	-Wyświetlenie macierzy w osobnym oknie,
+	-Szyfrowanie tekstu: poziomo, z góry na dół, z dołu do góry w dwóch trybach: usuwanie znaków niedozwolonych, lub ich przepisywanie na wyjście .
+	-Rozszyfrowywanie tekstu szyfrowanego:  poziomo, z góry na dół, z dołu do góry w dwóch trybach: usuwanie znaków niedozwolonych, lub ich przepisywanie na wyjście.
+	-Śledzenie kroków każdego ze sposobów szyfrowań.
+	-W polu na hasło dozwolone są jednie znaki określone jako dozwolone, inne niż dozwolone zostaną usunięte.
+	
+Znaki dozwolone: małe litery alfabetu angielskiego.
+Znaki niedozwolone: wszystkie inne które nie zawierają się w znakach dozwolonych.
+
+Wszelkie wielkie znaki zostaną zmienione na małe (wprowadzane jako hasło lub jako tekst do szyfrowania lub odszyfrowania).
+Wszelkie cyfry zostaną zamienione na znak "_"
+	

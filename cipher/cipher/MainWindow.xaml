@@ -37,27 +37,28 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Szyfruj" Click="button_szyfruj"/>
-        <Button Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Rozszyfruj" Click="Button_Click"/>
+        <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Szyfruj" Click="encrypt"/>
+        <Button Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" Content="Rozszyfruj" Click="decrypt"/>
 
-        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="10" Margin="0,0,0,30" Text="Enter password" Name="password" PreviewMouseDown="password_clear"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="10" Margin="0,0,0,30" Text="Wpisz hasło" Name="password" PreviewMouseDown="password_clear"/>
 
         <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="10" Name="text" TextWrapping="Wrap"
                ScrollViewer.VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
         <StackPanel Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Margin="20,0,0,0">
-        <RadioButton  Name="horizontali" Content="Pozimo" Grid.ColumnSpan="2" IsChecked="True"/>
-        <RadioButton  Name="gora_dol" Content="Z góry na dół" Grid.ColumnSpan="2" Margin="0, 2, 0 , 0"/>
-        <RadioButton  Name="dol_gora" Content="Z dołu do góry" Grid.ColumnSpan="2" Margin="0, 4, 0, 0"/>
+        <RadioButton  Name="horizontal" Content="Pozimo" Grid.ColumnSpan="2" IsChecked="True"/>
+        <RadioButton  Name="up_down" Content="Z góry na dół" Grid.ColumnSpan="2" Margin="0, 2, 0 , 0"/>
+        <RadioButton  Name="down_up" Content="Z dołu do góry" Grid.ColumnSpan="2" Margin="0, 4, 0, 0"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Margin="20,0,0,0">
             <RadioButton Name="remove_white" Content="Usun znaki specjalne" IsChecked="True"></RadioButton>
-            <RadioButton Content="Przpiesz znaki specjalne" Margin="0,2,0,0"/>
+            <RadioButton Content="Przepisz znaki specjalne" Margin="0,2,0,0"/>
+            <CheckBox Name="step" Content="Krok po kroku"/>
         </StackPanel>
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" Margin="0,0,0,44">
             <MenuItem Header="Zapisz" Click="save_file"/>
             <MenuItem Header="Otwórz" Click="load_file"/>
-            <MenuItem Header="O programie"/>
+            <MenuItem Header="O programie" Click="load_about"/>
             <MenuItem Header="Macierz" Click="show_matrix"/>
         </Menu>
     </Grid>

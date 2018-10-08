@@ -28,7 +28,6 @@ namespace cipher
             InitializeComponent();
         }
 
-        private bool entered_password = false;
         private delastelle d = new delastelle();
 
         private void load_file(object sender, RoutedEventArgs e)
@@ -62,152 +61,476 @@ namespace cipher
 
         private void show_matrix(object sender, RoutedEventArgs e)
         {
-            string pass = new string(password.Text.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-            if (password.Text != "" && password.Text != "Enter password")
+            string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+            
+            if (pass != "" && pass != "wpiszhaso")
             {
+                password.Text = pass;
                 d.set_matrix(pass);
                 matrix_window win = new matrix_window(d.get_matrix());
                 win.Show();
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Enter password");
-            }
-            
+                MessageBoxResult result = MessageBox.Show("Podaj hasło.");
+                password.Text = "Wpisz hasło";
+            }   
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void decrypt(object sender, RoutedEventArgs e)
         {
-            if (remove_white.IsChecked == true)
+            if (step.IsChecked == true)
             {
                 string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                MessageBoxResult result = MessageBox.Show("Usuwanie z hasła znaków niedozwolonych.");
+                if(result == MessageBoxResult.OK)
+                {
+                    password.Text = pass;
+                }
+
+                result = MessageBox.Show("Pobieranie tekstu do odszyfrowania.");
                 string plain_text = text.Text.ToLower();
-                d.set_matrix(pass);
-                if (pass == "" || pass == "Enterpassword")
+                result = MessageBox.Show("Sprawdzanie warunków które muszą spełaniać hasło i tekst do odszyfrowania.");
+                if (pass == "" || plain_text == "" || pass == "wpiszhaso")
                 {
-                    MessageBoxResult result = MessageBox.Show("Enter password");
-                }
-                else if (plain_text == "")
-                {
-                    MessageBoxResult result = MessageBox.Show("Enter text to decryption");
-                }
-                if (plain_text != "" && pass != "")
-                {
-                    if (horizontali.IsChecked == true)
+                    if (pass == "" || pass == "wpiszhaso")
                     {
-                        text.Text = d.poziomo_rozszyfruj(plain_text);
+                        result = MessageBox.Show("Podaj hasło.");
+                        password.Text = "Wpisz hasło";
                     }
-                    if(gora_dol.IsChecked == true)
+                    if (plain_text == "")
                     {
-                        text.Text = d.gora_dol_rozszyforwanie(plain_text);
-                    }
-                    if (dol_gora.IsChecked == true)
-                    {
-                        text.Text = d.dol_gora_rozszyforwanie(plain_text);
+                        result = MessageBox.Show("Podaj tekst.");
                     }
                 }
+                else
+                {
+                    result = MessageBox.Show("Ustawienie macierzy.");
+                    if (result == MessageBoxResult.OK)
+                    {
+                        d.set_matrix(pass);
+                        show_matrix_separate_thread();
+                    }
+                    if (remove_white.IsChecked == true)
+                    {
+                        if (horizontal.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Odtwarzanie postaci przejściowej.");
+                            if(result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.pozimo_przejscowa_rozszufruj(plain_text);
+                            }
+                            result = MessageBox.Show("Odszyfrowanie.");
+                            if(result == MessageBoxResult.OK)
+                                text.Text = d.poziomo_rozszyfruj(plain_text);
+                        }
+                        if (up_down.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Odtwarzanie postaci przejściowej.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_przejsciowa_rozszyforwanie(plain_text);
+                            }
+                            result = MessageBox.Show("Odszyfrowanie.");
+                            if (result == MessageBoxResult.OK)
+                                text.Text = d.gora_dol_rozszyforwanie(plain_text);
+                        }
+                        if (down_up.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Odtwarzanie postaci przejściowej.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_przejsciowa_rozszyfrowanie(plain_text);
+                            }
+                            result = MessageBox.Show("Odszyfrowanie.");
+                            if (result == MessageBoxResult.OK)
+                                text.Text = d.dol_gora_rozszyforwanie(plain_text);
+
+                        }
+                    }
+                    else
+                    {
+
+                        result = MessageBox.Show("Podział tekstu na tokeny.(Każdy token rozdzielony znakiem nowej lini)");
+                        if (result == MessageBoxResult.OK)
+                        {
+                            var tmp = d.tokens_raw(plain_text);
+                            string tokens = "";
+                            for (int i = 0; i < tmp.Length; i++)
+                            {
+                                tokens += tmp[i];
+                                tokens += "\n";
+                            }
+                            text.Text = tokens;
+                        }
+                        if (horizontal.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej tokentów bez znaków specjalnych i odtworzenie poprzedniej kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.poziomo_przejsciowa_specjalne(plain_text);
+                            }
+                            result = MessageBox.Show("Rozszyfrowanie tokenów które nie zawierają znaków specjalnych i odtworzenie pierwotnej kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.poziomo_rozszyfruj_specjlane(plain_text);
+                            }
+                            
+                        }
+                        if (up_down.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej tokentów bez znaków specjalnych i odtworzenie kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_przejsciowa_specjalne(plain_text);
+                            }
+                            result = MessageBox.Show("Rozszyfrowanie tokenów które nie zawierają znaków specjalnych i odtworzenie pierwotnej kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_rozszyfruj_specjalne(plain_text);
+                            }
+                            
+                        }
+                        if (down_up.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej tokentów bez znaków specjalnych i odtworzenie kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_przejsciowa_specjalne(plain_text);
+                            }
+                            result = MessageBox.Show("Rozszyfrowanie tokenów które nie zawierają znaków specjalnych i odtworzenie pierwotnej kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_rozszyfruj_specjalne(plain_text);
+                            }
+                            
+                        }
+                    }
+                }
+
+
             }
             else
             {
                 string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                string plain_text = text.Text;
-                d.set_matrix(pass);
-                if (pass == "" || pass == "Enterpassword")
+                password.Text = pass;
+                string plain_text = text.Text.ToLower(); 
+                if (pass == "" || plain_text == "" || pass == "wpiszhaso")
                 {
-                    MessageBoxResult result = MessageBox.Show("Enter password");
+                    if (pass == "" || pass == "wpiszhaso")
+                    {
+                        MessageBoxResult result = MessageBox.Show("Podaj hasło.");
+                        password.Text = "Wpisz hasło";
+                    }
+                    if (plain_text == "")
+                    {
+                        MessageBoxResult result = MessageBox.Show("Podaj tekst.");
+                    }
                 }
-                else if (plain_text == "")
+                else
                 {
-                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
-                }
-                if (plain_text != "" && pass != "")
-                {
-                    if (horizontali.IsChecked == true)
+                    d.set_matrix(pass);
+                    if (remove_white.IsChecked == true)
                     {
-                        text.Text = d.poziomo_rozszyfruj_specjlane(plain_text);
+                        if (horizontal.IsChecked == true)
+                        {
+                            text.Text = d.poziomo_rozszyfruj(plain_text);
+                        }
+                        if (up_down.IsChecked == true)
+                        {
+                            text.Text = d.gora_dol_rozszyforwanie(plain_text);
+                        }
+                        if (down_up.IsChecked == true)
+                        {
+                            text.Text = d.dol_gora_rozszyforwanie(plain_text);
+                        }
                     }
-                    if (gora_dol.IsChecked == true)
+                    else
                     {
-                        text.Text = d.gora_dol_rozszyfruj_specjalne(plain_text);
+                        if (horizontal.IsChecked == true)
+                        {
+                            text.Text = d.poziomo_rozszyfruj_specjlane(plain_text);
+                        }
+                        if (up_down.IsChecked == true)
+                        {
+                            text.Text = d.gora_dol_rozszyfruj_specjalne(plain_text);
+                        }
+                        if (down_up.IsChecked == true)
+                        {
+                            text.Text = d.dol_gora_rozszyfruj_specjalne(plain_text);
+                        }
                     }
-                    if(dol_gora.IsChecked == true)
-                    {
-                        text.Text = d.dol_gora_rozszyfruj_specjalne(plain_text);
-                    }
-
                 }
             }
-
         }
 
         private void password_clear(object sender, RoutedEventArgs e)
         {
-            entered_password = true;
             password.Text = "";
         }
 
-        private void button_szyfruj(object sender, RoutedEventArgs e)
+        private void show_matrix_separate_thread()
         {
-
-            if (remove_white.IsChecked == true)
+            System.Threading.Thread win = new System.Threading.Thread(delegate ()
             {
-                string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
-                System.Console.WriteLine(plain_text);
-                d.set_matrix(pass);
-                if (pass == "" || pass == "enterpassword")
+                var viewer = new matrix_window(d.get_matrix());
+                viewer.Show();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+
+            win.SetApartmentState(System.Threading.ApartmentState.STA);
+            win.Start();
+        }
+
+        private void encrypt(object sender, RoutedEventArgs e)
+        {
+            if(step.IsChecked == true)
+            {
+                if (remove_white.IsChecked == true)
                 {
-                    MessageBoxResult result = MessageBox.Show("Enter password");
-                }
-                else if (plain_text == "")
-                {
-                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
-                }
-                if (plain_text != "" && pass != "")
-                {
-                    if (horizontali.IsChecked == true)
+                    MessageBoxResult result = MessageBox.Show("Filtrowanie hasła z niedozwolonych znaków.");
+                    string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                    password.Text = pass;
+                    result = MessageBox.Show("Filtrowanie tesktu do szyfrowania z niedozwolonych znaków.");
+                    string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
+                    text.Text = plain_text;
+                    if (pass == "" || pass == "wpiszhaso" || plain_text == "")
                     {
-                        text.Text = d.poziomo_szyforwanie(plain_text);
+                        if (pass == "" || pass == "wpiszhaso")
+                        {
+                            result = MessageBox.Show("Podaj hasło");
+                            password.Text = "Wpisz hasło";
+                        }
+                        if (plain_text == "")
+                        {
+                            result = MessageBox.Show("Podaj tekst.");
+                        }
                     }
-                    else if (gora_dol.IsChecked == true)
+                    else
                     {
-                        text.Text = d.gora_dol_szyforwanie(plain_text);
+                        result = MessageBox.Show("Ustawienie macierzy.");
+                        if(result == MessageBoxResult.OK)
+                        {
+                            d.set_matrix(pass);
+                            show_matrix_separate_thread();
+                        }
+                        if (horizontal.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej.");
+                            if(result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.poziomo_przejsciowa(plain_text);
+                            }
+                            result = MessageBox.Show("Stworzenie szyfru.");
+                            if(result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.poziomo_szyforwanie(plain_text);
+                            }
+                        }
+                        else if (up_down.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej.");
+                            if(result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_przejsciowa(plain_text);
+                            }
+                            result = MessageBox.Show("Stworzenie szyfru.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_szyforwanie(plain_text);
+                            }
+                        }
+                        else if (down_up.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_przejsciowa(plain_text);
+                            }
+                            result = MessageBox.Show("Stworzenie szyfru.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_szyfrowanie(plain_text);
+                            }
+                        }
                     }
-                    else if (dol_gora.IsChecked == true)
+                }
+                else
+                {
+                    MessageBoxResult result = MessageBox.Show("Filtrowanie hasła z niedozwolonych znaków.");
+                    string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                    if(result == MessageBoxResult.OK)
                     {
-                        text.Text = d.dol_gora_szyfrowanie(plain_text);
+                        password.Text = pass;
+                    }
+                    string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+                    result = MessageBox.Show("Filtrowanie tekstu z cyfr(zamiana każdej cyfry na znak _).");
+                    if(result == MessageBoxResult.OK)
+                    {
+                        text.Text = plain_text;
+                    }
+                    if (pass == "" || pass == "wpiszhaso" || plain_text == "")
+                    {
+                        if (pass == "" || pass == "wpiszhaso")
+                        {
+                            result = MessageBox.Show("Podaj hasło");
+                            password.Text = "Wpisz hasło";
+                        }
+                        if (plain_text == "")
+                        {
+                            result = MessageBox.Show("Podaj tekst.");
+                        }
+                    }
+                    else
+                    {
+                        result = MessageBox.Show("Ustawienie macierzy.");
+                        if (result == MessageBoxResult.OK)
+                        {
+                            d.set_matrix(pass);
+                            show_matrix_separate_thread();
+                        }
+                        result = MessageBox.Show("Podział tekstu na tokeny.(Każdy token rozdzielony znakiem nowej lini)");
+                        if (result == MessageBoxResult.OK)
+                        {
+                            var tmp = d.tokens_raw(plain_text);
+                            string tokens = "";
+                            for (int i = 0; i < tmp.Length; i++)
+                            {
+                                tokens += tmp[i];
+                                tokens += "\n";
+                            }
+                            text.Text = tokens;
+                        }
+                        if (horizontal.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej tokentów bez znaków spacjalnych i odtworzenie kolejności ich wystąpień.");
+                            if(result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.poziomo_przejsciowa_specjalne(plain_text);
+                            }
+                            result = MessageBox.Show("Syforowanie tokenów które nie zawierają znaków specjalnych i odtworzenie pierwotnej kolejności ich wystąpień.");
+                            if(result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.poziomo_szyfruj_specjalne(plain_text);
+                            }
+                        }
+                        if (up_down.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej tokentów bez znaków spacjalnych i odtworzenie kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_przejsciowa_specjalne(plain_text);
+                            }
+                            result = MessageBox.Show("Syforowanie tokenów które nie zawierają znaków specjalnych i pierwotnej kolejności ich wystąpień");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.gora_dol_szyfruj_specjalne(plain_text);
+                            }
+                        }
+                        if (down_up.IsChecked == true)
+                        {
+                            result = MessageBox.Show("Stworzenie postaci pośredniej tokentów bez znaków spacjalnych i odtworzenie kolejności ich wystąpień.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_przejsciowa_specjalne(plain_text);
+                            }
+                            result = MessageBox.Show("Syforowanie tokenów które nie zawierają znaków specjalnych i odtworzenie poprzedniej postaci tekstu.");
+                            if (result == MessageBoxResult.OK)
+                            {
+                                text.Text = d.dol_gora_szyfruj_specjalne(plain_text);
+                            }
+                        }
                     }
                 }
             }
             else
             {
-                string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_"); 
-                d.set_matrix(pass);
-                if (pass == "" || pass == "enterpassword")
+                if(remove_white.IsChecked == true)
                 {
-                    MessageBoxResult result = MessageBox.Show("Enter password");
-                }
-                else if (plain_text == "")
-                {
-                    MessageBoxResult result = MessageBox.Show("Enter text to encyption");
-                }
-                if (plain_text != "" && pass != "")
-                {
-                    if (horizontali.IsChecked == true)
+                    string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                    
+                    string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
+                    if (pass == "" || pass == "wpiszhaso" || plain_text == "")
                     {
-                        text.Text = d.poziomo_szyfruj_specjalne(plain_text);
+                        if (pass == "" || pass == "wpiszhaso")
+                        {
+                            password.Text = pass;
+                            MessageBoxResult result = MessageBox.Show("Podaj hasło");
+                            password.Text = "Wpisz hasło";
+                        }
+                        if (plain_text == "")
+                        {
+                            MessageBoxResult result = MessageBox.Show("Podaj tekst.");
+                        }
                     }
-                    if(gora_dol.IsChecked == true)
+                    else
                     {
-                        text.Text = d.gora_dol_szyfruj_specjalne(plain_text);
+                        d.set_matrix(pass);
+                        //password.Text = pass;
+                        if (horizontal.IsChecked == true)
+                        {
+                            System.Console.WriteLine(plain_text);
+                            text.Text = d.poziomo_szyforwanie(plain_text);
+                        }
+                        else if (up_down.IsChecked == true)
+                        {
+                            text.Text = d.gora_dol_szyforwanie(plain_text);
+                        }
+                        else if (down_up.IsChecked == true)
+                        {
+                            text.Text = d.dol_gora_szyfrowanie(plain_text);
+                        }
                     }
-                    if(dol_gora.IsChecked == true)
+                }
+                else
+                {
+                    string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+                    string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+                    if (pass == "" || pass == "wpiszhaso" || plain_text == "")
                     {
-                        text.Text = d.dol_gora_szyfruj_specjalne(plain_text);
+                        if (pass == "" || pass == "wpiszhaso")
+                        {
+                            MessageBoxResult result = MessageBox.Show("Podaj hasło");
+                            password.Text = "Wpisz hasło";
+                        }
+                        if (plain_text == "")
+                        {
+                            MessageBoxResult result = MessageBox.Show("Podaj tekst.");
+                        }
+                    }
+                    else
+                    {
+                        password.Text = pass;
+                        d.set_matrix(pass);
+                        if (horizontal.IsChecked == true)
+                        {
+                            text.Text = d.poziomo_szyfruj_specjalne(plain_text);
+                        }
+                        if (up_down.IsChecked == true)
+                        {
+                            text.Text = d.gora_dol_szyfruj_specjalne(plain_text);
+                        }
+                        if (down_up.IsChecked == true)
+                        {
+                            text.Text = d.dol_gora_szyfruj_specjalne(plain_text);
+                        }
                     }
                 }
             }
+
+
+
+
+
+
+
+            
+        }
+
+        private void load_about(object sender, RoutedEventArgs e)
+        {
+            var abo = new about();
+            abo.Show();
         }
     }
 }
