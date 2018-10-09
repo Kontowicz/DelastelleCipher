@@ -1,4 +1,4 @@
-Program wykonał: Piotr Kontowicz
+﻿Program wykonał: Piotr Kontowicz
 Zadanie: Szyfr Delastelle'a
 Program umożliwia:
 	-Wczytanie pliku z systemu plików,
@@ -14,5 +14,75 @@ Znaki dozwolone: małe litery alfabetu angielskiego.
 Znaki niedozwolone: wszystkie inne które nie zawierają się w znakach dozwolonych.
 
 Wszelkie wielkie znaki zostaną zmienione na małe (wprowadzane jako hasło lub jako tekst do szyfrowania lub odszyfrowania).
-Wszelkie cyfry zostaną zamienione na znak "_"
-	
+
+Opisz szyfrów:
+Szyforwanie poziome:
+hasło: klucz	
+tekst: lampka
+
+Macierz:
+  12345
+1 KLUCZ
+2 ABDEF
+3 GHI/JMN
+4 OPQRS
+5 TVWXY
+
+Odczytujemy odpowiadające numery kolumn i wierszy każdej z liter:
+		lampka
+kolumna 	214211
+wiersz		123412
+
+Tworzymy postać pośrednią odczytując numery kolumn każdej z liter a następnie numerów wierszy każdej z liter:
+214211123412
+
+Na postawie postaci pośredniej tworzymy szyfr(odczytanie odpowiedniej litery dla każdej kolejnej pary liczb):
+lekaqa
+
+Szyforwanie z góry na dół:
+hasło: klucz	
+tekst: lampka
+
+Macierz:
+  12345
+1 KLUCZ
+2 ABDEF
+3 GHI/JMN
+4 OPQRS
+5 TVWXY
+
+Odczytujemy odpowiadające numery kolumn i wierszy każdej z liter:
+		lampka
+kolumna 	214211
+wiersz		123412
+
+Tworzymy postać pośrednią odczytują numer kolumny i-tej litery i numeru wiersza litery i+1
+221344211211
+
+
+Na postawie postaci pośredniej tworzymy szyfr(odczytanie odpowiedniej litery dla każdej kolejnej pary liczb):
+brglak
+
+Szyforwanie z dołu do góry:
+hasło: klucz	
+tekst: lampka
+
+Macierz:
+  12345
+1 KLUCZ
+2 ABDEF
+3 GHI/JMN
+4 OPQRS
+5 TVWXY
+
+Odczytujemy odpowiadające numery kolumn i wierszy każdej z liter:
+		lampka
+kolumna 	214211
+wiersz		123412
+
+Tworzymy postać pośrednią odczytują numer kolumny i-tej litery i numeru wiersza litery i+1
+112432411122
+
+
+Na postawie postaci pośredniej tworzymy szyfr(odczytanie odpowiedniej litery dla każdej kolejnej pary liczb):
+kpdckb

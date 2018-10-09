@@ -363,7 +363,8 @@ namespace cipher
                     {
                         password.Text = pass;
                     }
-                    string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+                    // string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+                    string plain_text = text.Text.ToLower();
                     result = MessageBox.Show("Filtrowanie tekstu z cyfr(zamiana każdej cyfry na znak _).");
                     if(result == MessageBoxResult.OK)
                     {
@@ -485,7 +486,8 @@ namespace cipher
                 else
                 {
                     string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                    string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+                    //string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+                    string plain_text = text.Text.ToLower();
                     if (pass == "" || pass == "wpiszhaso" || plain_text == "")
                     {
                         if (pass == "" || pass == "wpiszhaso")
