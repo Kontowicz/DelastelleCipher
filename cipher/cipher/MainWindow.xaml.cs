@@ -36,15 +36,13 @@ namespace cipher
             {
                 OpenFileDialog op = new OpenFileDialog();
                 if (op.ShowDialog() == true)
-                {
                     text.Text = File.ReadAllText(op.FileName);
-                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error, somthing gone wrong.\n Orginal message:" + ex.Message);
             }
-        }
+        } // ok 
 
         private void save_file(object sender, RoutedEventArgs e)
         {
@@ -54,13 +52,11 @@ namespace cipher
             };
 
             if (dialog.ShowDialog() == true)
-            {
                 File.WriteAllText(dialog.FileName, text.Text);
-            }
-        }
+        } // ok
 
         private void show_matrix(object sender, RoutedEventArgs e)
-        {
+        { 
             string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
             
             if (pass != "" && pass != "wpiszhaso")
@@ -75,7 +71,7 @@ namespace cipher
                 MessageBoxResult result = MessageBox.Show("Podaj hasło.");
                 password.Text = "Wpisz hasło";
             }   
-        }
+        } // ok
 
         private void decrypt(object sender, RoutedEventArgs e)
         {
@@ -262,7 +258,7 @@ namespace cipher
                     }
                 }
             }
-        }
+        } // need refactor
 
         private void password_clear(object sender, RoutedEventArgs e)
         {
@@ -280,6 +276,79 @@ namespace cipher
 
             win.SetApartmentState(System.Threading.ApartmentState.STA);
             win.Start();
+        }
+
+        private bool checkPasswordText(string pass, string plain_text)
+        {
+            if (pass == "" || pass == "wpiszhaso" || plain_text == "")
+            {
+                if (pass == "" || pass == "wpiszhaso")
+                {
+                    password.Text = pass;
+                    MessageBoxResult result = MessageBox.Show("Podaj hasło.");
+                    password.Text = "Wpisz hasło";
+                    return false;
+                }
+                if (plain_text == "")
+                {
+                    MessageBoxResult result = MessageBox.Show("Podaj tekst.");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void enryptAllRemoveWhite()
+        {
+            string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+            string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
+
+            if (checkPasswordText(pass, plain_text) == true)
+            {
+                d.set_matrix(pass);
+                if (horizontal.IsChecked == true)
+                    text.Text = d.poziomo_szyforwanie(plain_text);
+                else if (up_down.IsChecked == true)
+                    text.Text = d.gora_dol_szyforwanie(plain_text);
+                else if (down_up.IsChecked == true)
+                    text.Text = d.dol_gora_szyfrowanie(plain_text);
+            }
+        }
+
+        private bool checkPassword(string pass)
+        {
+            string plain_text = text.Text.ToLower();
+            if (pass == "" || pass == "wpiszhaso" || plain_text == "")
+            {
+                if (pass == "" || pass == "wpiszhaso")
+                {
+                    MessageBoxResult result = MessageBox.Show("Podaj hasło");
+                    password.Text = "Wpisz hasło";
+                    return false;
+                }
+                if (plain_text == "")
+                {
+                    MessageBoxResult result = MessageBox.Show("Podaj tekst.");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void encryptAllRewrite()
+        {
+            string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
+            if (checkPassword(pass) == true)
+            {
+                password.Text = pass;
+                d.set_matrix(pass);
+                if (horizontal.IsChecked == true)
+                    text.Text = d.poziomo_szyfruj_specjalne(text.Text.ToLower());
+                if (up_down.IsChecked == true)
+                    text.Text = d.gora_dol_szyfruj_specjalne(text.Text.ToLower());
+                if (down_up.IsChecked == true)
+                    text.Text = d.dol_gora_szyfruj_specjalne(text.Text.ToLower());
+            }
         }
 
         private void encrypt(object sender, RoutedEventArgs e)
@@ -318,40 +387,31 @@ namespace cipher
                         {
                             result = MessageBox.Show("Stworzenie postaci pośredniej.");
                             if(result == MessageBoxResult.OK)
-                            {
                                 text.Text = d.poziomo_przejsciowa(plain_text);
-                            }
+
                             result = MessageBox.Show("Stworzenie szyfru.");
                             if(result == MessageBoxResult.OK)
-                            {
                                 text.Text = d.poziomo_szyforwanie(plain_text);
-                            }
                         }
                         else if (up_down.IsChecked == true)
                         {
                             result = MessageBox.Show("Stworzenie postaci pośredniej.");
                             if(result == MessageBoxResult.OK)
-                            {
                                 text.Text = d.gora_dol_przejsciowa(plain_text);
-                            }
+
                             result = MessageBox.Show("Stworzenie szyfru.");
                             if (result == MessageBoxResult.OK)
-                            {
                                 text.Text = d.gora_dol_szyforwanie(plain_text);
-                            }
                         }
                         else if (down_up.IsChecked == true)
                         {
                             result = MessageBox.Show("Stworzenie postaci pośredniej.");
                             if (result == MessageBoxResult.OK)
-                            {
                                 text.Text = d.dol_gora_przejsciowa(plain_text);
-                            }
+
                             result = MessageBox.Show("Stworzenie szyfru.");
                             if (result == MessageBoxResult.OK)
-                            {
                                 text.Text = d.dol_gora_szyfrowanie(plain_text);
-                            }
                         }
                     }
                 }
@@ -363,7 +423,7 @@ namespace cipher
                     {
                         password.Text = pass;
                     }
-                    // string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
+
                     string plain_text = text.Text.ToLower();
                     result = MessageBox.Show("Filtrowanie tekstu z cyfr(zamiana każdej cyfry na znak _).");
                     if(result == MessageBoxResult.OK)
@@ -447,92 +507,16 @@ namespace cipher
             else
             {
                 if(remove_white.IsChecked == true)
-                {
-                    string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                    
-                    string plain_text = Regex.Replace(text.Text.ToLower(), "[^a-z]", "");
-                    if (pass == "" || pass == "wpiszhaso" || plain_text == "")
-                    {
-                        if (pass == "" || pass == "wpiszhaso")
-                        {
-                            password.Text = pass;
-                            MessageBoxResult result = MessageBox.Show("Podaj hasło");
-                            password.Text = "Wpisz hasło";
-                        }
-                        if (plain_text == "")
-                        {
-                            MessageBoxResult result = MessageBox.Show("Podaj tekst.");
-                        }
-                    }
-                    else
-                    {
-                        d.set_matrix(pass);
-                        //password.Text = pass;
-                        if (horizontal.IsChecked == true)
-                        {
-                            System.Console.WriteLine(plain_text);
-                            text.Text = d.poziomo_szyforwanie(plain_text);
-                        }
-                        else if (up_down.IsChecked == true)
-                        {
-                            text.Text = d.gora_dol_szyforwanie(plain_text);
-                        }
-                        else if (down_up.IsChecked == true)
-                        {
-                            text.Text = d.dol_gora_szyfrowanie(plain_text);
-                        }
-                    }
-                }
+                    enryptAllRemoveWhite();
                 else
-                {
-                    string pass = Regex.Replace(password.Text.ToLower(), "[^a-z]", "");
-                    //string plain_text = Regex.Replace(text.Text.ToLower(), "[0-9]", "_");
-                    string plain_text = text.Text.ToLower();
-                    if (pass == "" || pass == "wpiszhaso" || plain_text == "")
-                    {
-                        if (pass == "" || pass == "wpiszhaso")
-                        {
-                            MessageBoxResult result = MessageBox.Show("Podaj hasło");
-                            password.Text = "Wpisz hasło";
-                        }
-                        if (plain_text == "")
-                        {
-                            MessageBoxResult result = MessageBox.Show("Podaj tekst.");
-                        }
-                    }
-                    else
-                    {
-                        password.Text = pass;
-                        d.set_matrix(pass);
-                        if (horizontal.IsChecked == true)
-                        {
-                            text.Text = d.poziomo_szyfruj_specjalne(plain_text);
-                        }
-                        if (up_down.IsChecked == true)
-                        {
-                            text.Text = d.gora_dol_szyfruj_specjalne(plain_text);
-                        }
-                        if (down_up.IsChecked == true)
-                        {
-                            text.Text = d.dol_gora_szyfruj_specjalne(plain_text);
-                        }
-                    }
-                }
-            }
-
-
-
-
-
-
-
-            
-        }
+                    encryptAllRewrite();
+            } // ok 
+        } // need refactor
 
         private void load_about(object sender, RoutedEventArgs e)
         {
-            var abo = new about();
-            abo.Show();
-        }
+            var about = new about();
+            about .Show();
+        } // ok 
     }
 }
