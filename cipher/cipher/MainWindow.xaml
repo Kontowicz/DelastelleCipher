@@ -42,8 +42,8 @@
 
         <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="10" Margin="0,0,0,30" Text="Wpisz hasło" Name="password" PreviewMouseDown="password_clear"/>
 
-        <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="10" Name="text" TextWrapping="Wrap"
-               ScrollViewer.VerticalScrollBarVisibility="Visible" AcceptsReturn="True"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="7" Grid.ColumnSpan="10" Name="text"
+               ScrollViewer.VerticalScrollBarVisibility="Visible" AcceptsReturn="True" TextWrapping="Wrap"/>
         <StackPanel Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Margin="20,0,0,0">
         <RadioButton  Name="horizontal" Content="Pozimo" Grid.ColumnSpan="2" IsChecked="True"/>
         <RadioButton  Name="up_down" Content="Z góry na dół" Grid.ColumnSpan="2" Margin="0, 2, 0 , 0"/>

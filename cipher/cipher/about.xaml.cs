@@ -37,18 +37,20 @@ namespace cipher
             my_grid.RowDefinitions.Add(row_first);
             my_grid.RowDefinitions.Add(row_second);
 
-            Viewbox w = new Viewbox();
             
             TextBox tmp = new TextBox();
+            tmp.TextWrapping = TextWrapping.Wrap;
+            tmp.FontSize = 20;
+            tmp.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             tmp.AcceptsReturn = true;
             string contents = File.ReadAllText(@"../../about.txt");
             tmp.Text = contents;
-            w.Child = tmp;
-            Grid.SetColumnSpan(w, 2);
-            Grid.SetRowSpan(w, 2);
-            Grid.SetRow(w, 0);
-            Grid.SetColumn(w, 0);
-            my_grid.Children.Add(w);
+            
+            Grid.SetColumnSpan(tmp, 2);
+            Grid.SetRowSpan(tmp, 2);
+            Grid.SetRow(tmp, 0);
+            Grid.SetColumn(tmp, 0);
+            my_grid.Children.Add(tmp);
             this.Content = my_grid;
         }
     }

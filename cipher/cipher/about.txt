@@ -8,15 +8,16 @@ Program umożliwia:
 	-Szyfrowanie tekstu: poziomo, z góry na dół, z dołu do góry w dwóch trybach: usuwanie znaków niedozwolonych, lub ich przepisywanie na wyjście .
 	-Rozszyfrowywanie tekstu szyfrowanego:  poziomo, z góry na dół, z dołu do góry w dwóch trybach: usuwanie znaków niedozwolonych, lub ich przepisywanie na wyjście.
 	-Śledzenie kroków każdego ze sposobów szyfrowań.
-	-W polu na hasło dozwolone są jednie znaki określone jako dozwolone, inne niż dozwolone zostaną usunięte.
+	-W polu na hasło dozwolone są jednie znaki określone jako dozwolone, inne niż dozwolone zostaną usunięte. Hasło będzie składało się tylko ze znaków dozwolonych.
 	
 Znaki dozwolone: małe litery alfabetu angielskiego.
 Znaki niedozwolone: wszystkie inne które nie zawierają się w znakach dozwolonych.
 
 Wszelkie wielkie znaki zostaną zmienione na małe (wprowadzane jako hasło lub jako tekst do szyfrowania lub odszyfrowania).
 
-Opisz szyfrów:
-Szyforwanie poziome:
+Opis trybów szyfrowania:
+
+Poziome:
 hasło: klucz	
 tekst: lampka
 
@@ -37,9 +38,10 @@ Tworzymy postać pośrednią odczytując numery kolumn każdej z liter a następ
 214211123412
 
 Na postawie postaci pośredniej tworzymy szyfr(odczytanie odpowiedniej litery dla każdej kolejnej pary liczb):
-lekaqa
+21 42 11 12 34 12
+l  e  k  a  q  a
 
-Szyforwanie z góry na dół:
+Z góry na dół:
 hasło: klucz	
 tekst: lampka
 
@@ -61,9 +63,10 @@ Tworzymy postać pośrednią odczytują numer kolumny i-tej litery i numeru wier
 
 
 Na postawie postaci pośredniej tworzymy szyfr(odczytanie odpowiedniej litery dla każdej kolejnej pary liczb):
-brglak
+22 13 44 21 12 11
+b  r  g  l  a  k
 
-Szyforwanie z dołu do góry:
+Z dołu do góry:
 hasło: klucz	
 tekst: lampka
 
@@ -85,4 +88,5 @@ Tworzymy postać pośrednią odczytują numer kolumny i-tej litery i numeru wier
 
 
 Na postawie postaci pośredniej tworzymy szyfr(odczytanie odpowiedniej litery dla każdej kolejnej pary liczb):
-kpdckb
+11 24 32 41 11 22
+k  p  d  c  k  b
